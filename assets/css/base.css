@@ -1,0 +1,601 @@
+
+:root {
+    /* Primary */
+    --primary-900: #C10710;
+    --primary-800: #CF1D1E;
+    --primary-700: #dc2626;
+    --primary-600: hsl(2, 85%, 55%);
+    --primary-500: #FC3C2B;
+    --primary-400: #F84F49;
+    --primary-300: #ED716F;
+    --primary-200: #F59997;
+    --primary-100: #FFCDD1;
+    --primary-50:  #FFEBEE;
+
+    /* Secondary */
+    --secondary-900: #CF4900;
+    --secondary-800: #D86300;
+    --secondary-700: #DE7200;
+    --secondary-600: #E48100;
+    --secondary-500: #E88D00;
+    --secondary-400: #EA9D1D;
+    --secondary-300: #EDAE48;
+    --secondary-200: #F1C57E;
+    --secondary-100: #f6dcb2;
+    --secondary-50:  #FBF1E0;
+
+    --font-heading:  "Exo", sans-serif;;
+    --font-body: "Public Sans", sans-serif;;
+}
+
+
+/* =========================================
+   BASE CSS
+========================================= */
+
+html {
+    font-size: 62.5%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: #171717;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+p.text strong { font-weight: 700;}
+p.text a { color: var(--primary-700); font-weight: 500;}
+p.text a:hover { text-decoration: underline;}
+
+
+
+/* =========================================
+   COLORS
+========================================= */
+
+/* Primary */
+
+.text-primary {
+    color: var(--primary-500);
+}
+
+.bg-primary {
+    background: var(--primary-500);
+}
+
+.text-primary-900 {
+    color: var(--primary-900);
+}
+
+.bg-primary-900 {
+    background: var(--primary-900);
+}
+
+
+/* Secondary */
+
+.text-secondary {
+    color: var(--secondary-500);
+}
+
+.bg-secondary {
+    background: var(--secondary-500);
+}
+
+.text-secondary-900 {
+    color: var(--secondary-900);
+}
+
+.bg-secondary-900 {
+    background: var(--secondary-900);
+}
+
+
+/* Common */
+
+.text-white {
+    color: #fff;
+}
+
+.bg-white {
+    background: #fff;
+}
+
+
+/* =========================================
+   FONT SIZE
+   Maximum: 5rem = 50px
+========================================= */
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-16 {
+    font-size: 16px;
+}
+
+.fs-18 {
+    font-size: 18px;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-22 {
+    font-size: 2.2rem;
+}
+
+.fs-24 {
+    font-size: 2.4rem;
+}
+
+.fs-26 {
+    font-size: 2.6rem;
+}
+
+.fs-28 {
+    font-size: 2.8rem;
+}
+
+.fs-30 {
+    font-size: 3rem;
+}
+
+.fs-32 {
+    font-size: 3.2rem;
+}
+
+.fs-36 {
+    font-size: 3.6rem;
+}
+
+.fs-40 {
+    font-size: 4rem;
+}
+
+.fs-44 {
+    font-size: 4.4rem;
+}
+
+.fs-48 {
+    font-size: 4.8rem;
+}
+
+.fs-50 {
+    font-size: 5rem;
+}
+
+
+/* =========================================
+   FONT WEIGHT
+========================================= */
+
+.fw-400 {
+    font-weight: 400;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.fw-800 {
+    font-weight: 800;
+}
+
+
+/* =========================================
+   MARGIN
+   Under 20px = px
+   20px+ = rem
+========================================= */
+
+.m-0 {
+    margin: 0;
+}
+
+.m-5 {
+    margin: 5px;
+}
+
+.m-10 {
+    margin: 10px;
+}
+
+.m-15 {
+    margin: 15px;
+}
+
+.m-20 {
+    margin: 2rem;
+}
+
+.m-30 {
+    margin: 3rem;
+}
+
+.m-40 {
+    margin: 4rem;
+}
+
+.m-50 {
+    margin: 5rem;
+}
+
+.m-60 {
+    margin: 6rem;
+}
+
+.m-80 {
+    margin: 8rem;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+
+/* Margin Top */
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.mt-20 {
+    margin-top: 2rem;
+}
+
+.mt-30 {
+    margin-top: 3rem;
+}
+
+.mt-40 {
+    margin-top: 4rem;
+}
+
+.mt-50 {
+    margin-top: 5rem;
+}
+
+.mt-60 {
+    margin-top: 6rem;
+}
+
+.mt-70 {
+    margin-top: 7rem;
+}
+
+.mt-80 {
+    margin-top: 8rem;
+}
+
+
+/* Margin Bottom */
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-5 {
+    margin-bottom: 5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.mb-20 {
+    margin-bottom: 2rem;
+}
+
+.mb-30 {
+    margin-bottom: 3rem;
+}
+
+.mb-40 {
+    margin-bottom: 4rem;
+}
+
+.mb-50 {
+    margin-bottom: 5rem;
+}
+
+.mb-60 {
+    margin-bottom: 6rem;
+}
+
+.mb-70 {
+    margin-bottom: 7rem;
+}
+
+.mb-80 {
+    margin-bottom: 8rem;
+}
+
+/* =========================================
+   PADDING
+========================================= */
+
+.p-0 {
+    padding: 0;
+}
+
+.p-5 {
+    padding: 5px;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.p-15 {
+    padding: 15px;
+}
+
+.p-20 {
+    padding: 2rem;
+}
+
+.p-30 {
+    padding: 3rem;
+}
+
+.p-40 {
+    padding: 4rem;
+}
+
+.p-50 {
+    padding: 5rem;
+}
+
+.p-60 {
+    padding: 6rem;
+}
+
+.p-80 {
+    padding: 8rem;
+}
+
+
+/* Padding X */
+
+.px-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.px-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.px-20 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.px-30 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.px-40 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+
+/* Padding Y */
+
+.py-10 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.py-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.py-20 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.py-30 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.py-40 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.py-50 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.py-60 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+
+/* =========================================
+   FLEX
+========================================= */
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-start {
+    align-items: flex-start;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+
+/* =========================================
+   GAP
+========================================= */
+
+.gap-5 {
+    gap: 5px;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.gap-15 {
+    gap: 15px;
+}
+
+.gap-20 {
+    gap: 2rem;
+}
+
+.gap-30 {
+    gap: 3rem;
+}
+
+.gap-40 {
+    gap: 4rem;
+}
+
+
+/* =========================================
+   TEXT
+========================================= */
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+/* =========================================
+   WIDTH
+========================================= */
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+
+/* =========================================
+   BORDER RADIUS
+========================================= */
+
+.radius-5 {
+    border-radius: 5px;
+}
+
+.radius-10 {
+    border-radius: 10px;
+}
+
+.radius-15 {
+    border-radius: 15px;
+}
+
+.radius-20 {
+    border-radius: 2rem;
+}
+
+.radius-full {
+    border-radius: 50%;
+}

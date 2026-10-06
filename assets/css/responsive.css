@@ -1,0 +1,38 @@
+@media (max-width: 900px) {
+    .quote-btn, .header-phone {padding: 8px 2rem; min-width: inherit;}
+    .header-inner { justify-content: space-between; width: 100%;}
+
+    .nav-dropdown:hover .nav-dropdown-menu { transform: inherit;}
+    
+}
+
+@media (max-width: 600px) {
+    .faq-intro { position: static;}
+    .mission-box { position: relative;}
+    .inner-page-breadcrumb { font-size: 13px;}
+    .quote-btn { display: none;}
+
+    .charges-table td { font-size: 14px;}
+
+    .faq-title { font-size: 17px;}
+
+    .coverage-section.active .coverage-map { flex-direction: column;}
+}
+
+
+@media (max-width: 500px) {
+    
+    html { font-size: 55%;}
+
+
+    .header-logo { width: auto;}
+    .site-header { padding: 5px 20px 0;}
+
+    .header-phone { padding: 2px 4px;}
+    .faq-intro h2, .locations-header h2, .why-choose-content h2 { font-size: 3.2rem;}
+    .inner-page-breadcrumb, .header-phone span {display: none;}
+
+    .location-card h3 { font-size: 20px;}
+
+    .area-intro-content h2, .locations-header h2 { line-height: 1.30;}
+}
