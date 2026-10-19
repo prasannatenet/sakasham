@@ -6278,6 +6278,46 @@ position: relative;
     background: var(--primary-900);
 }
 
+.search-btn:disabled {
+    cursor: wait;
+    opacity: .7;
+}
+
+.enquiry-status {
+    margin: 1rem 0 0;
+    font-size: 1.4rem;
+}
+
+.enquiry-status[data-state="success"] {
+    color: #16713b;
+}
+
+.enquiry-status[data-state="error"] {
+    color: #b42318;
+}
+
+.enquiry-success-dialog {
+    width: min(92vw, 48rem);
+    padding: 3.2rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 2rem 6rem rgba(0, 0, 0, .25);
+    text-align: center;
+}
+
+.enquiry-success-dialog::backdrop {
+    background: rgba(20, 24, 30, .62);
+}
+
+.enquiry-success-dialog h2 {
+    margin: 0 0 1rem;
+    color: var(--primary-900);
+}
+
+.enquiry-success-dialog p {
+    margin: 0 0 2rem;
+}
+
 /* TRUST STRIP */
 .trust-strip {
     background: var(--secondary-50);

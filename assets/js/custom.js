@@ -1472,6 +1472,230 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    {
+        const apiUrl = 'https://crm.sakshampackersandmovers.com/api/enquiries';
+        const fieldNames = ['pickup_city', 'drop_city', 'name', 'mobile', 'preferred_date'];
+        const today = new Date();
+        const minDate = [
+            today.getFullYear(),
+            String(today.getMonth() + 1).padStart(2, '0'),
+            String(today.getDate()).padStart(2, '0'),
+        ].join('-');
+
+        document.querySelectorAll('form.search-box').forEach((form, formIndex) => {
+            const inputs = Array.from(form.querySelectorAll('.field input'));
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            if (inputs.length !== fieldNames.length || !submitButton) {
+                console.error('Check Price form is missing one or more expected fields.', form);
+                return;
+            }
+
+            inputs.forEach((input, index) => {
+                const fieldName = fieldNames[index];
+                const label = input.closest('.field')?.querySelector('label');
+
+                input.name = fieldName;
+                input.required = true;
+                input.maxLength = fieldName === 'mobile' ? 20 : 120;
+                if (label) {
+                    const id = `check-price-${formIndex}-${fieldName}`;
+                    input.id = id;
+                    label.htmlFor = id;
+                }
+
+                if (fieldName === 'pickup_city' || fieldName === 'drop_city') {
+                    input.autocomplete = 'address-level2';
+                } else if (fieldName === 'name') {
+                    input.autocomplete = 'name';
+                } else if (fieldName === 'mobile') {
+                    input.autocomplete = 'tel';
+                    input.pattern = '(?=.*\\d)[\\d\\s\\+\\(\\)\\-]{6,20}';
+                    input.title = 'Enter 6 to 20 characters using numbers, +, -, spaces, or parentheses.';
+                } else {
+                    input.removeAttribute('value');
+                    input.value = '';
+                    input.min = minDate;
+                    input.autocomplete = 'off';
+                }
+            });
+
+            const status = document.createElement('p');
+            status.className = 'enquiry-status';
+            status.setAttribute('role', 'status');
+            status.setAttribute('aria-live', 'polite');
+            status.hidden = true;
+            form.insertAdjacentElement('afterend', status);
+            let isSubmitting = false;
+            const suggestionRequests = new WeakMap();
+            const suggestionTimers = new WeakMap();
+
+            inputs.slice(0, 2).forEach((input, index) => {
+                const list = document.createElement('datalist');
+                list.id = `check-price-locations-${formIndex}-${index}`;
+                form.appendChild(list);
+                input.setAttribute('list', list.id);
+
+                input.addEventListener('input', () => {
+                    const priorTimer = suggestionTimers.get(input);
+                    if (priorTimer) clearTimeout(priorTimer);
+                    suggestionRequests.get(input)?.abort();
+                    list.replaceChildren();
+
+                    const query = input.value.trim();
+                    if (query.length < 2) return;
+
+                    const timer = setTimeout(async () => {
+                        const controller = new AbortController();
+                        suggestionRequests.set(input, controller);
+                        try {
+                            const response = await fetch(
+                                `https://crm.sakshampackersandmovers.com/api/service-locations/suggestions?q=${encodeURIComponent(query)}`,
+                                {
+                                    headers: { Accept: 'application/json' },
+                                    signal: controller.signal,
+                                }
+                            );
+                            if (!response.ok) {
+                                throw new Error(`Location suggestions returned HTTP ${response.status}.`);
+                            }
+
+                            const suggestions = await response.json();
+                            if (!Array.isArray(suggestions)) {
+                                throw new Error('Location suggestions response was not a list.');
+                            }
+                            if (input.value.trim() !== query) return;
+
+                            suggestions.forEach((suggestion) => {
+                                if (typeof suggestion.value !== 'string' || typeof suggestion.label !== 'string') return;
+                                const option = document.createElement('option');
+                                option.value = suggestion.value;
+                                option.label = suggestion.label;
+                                list.appendChild(option);
+                            });
+                        } catch (error) {
+                            if (error.name !== 'AbortError') {
+                                console.error('Unable to load service-location suggestions:', error);
+                            }
+                        }
+                    }, 250);
+                    suggestionTimers.set(input, timer);
+                });
+            });
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (isSubmitting || !form.reportValidity()) return;
+
+                isSubmitting = true;
+                const originalButtonContent = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+                form.setAttribute('aria-busy', 'true');
+                status.hidden = true;
+
+                const payload = Object.fromEntries(
+                    inputs.map((input) => [input.name, input.value.trim()])
+                );
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        const errors = Object.values(result.errors || {}).flat();
+                        const message = errors.length
+                            ? errors.join(' ')
+                            : result.message || 'Unable to submit your enquiry. Please try again.';
+                        status.dataset.state = 'error';
+                        status.textContent = response.status === 429
+                            ? 'Too many requests. Please wait a minute before trying again.'
+                            : message;
+                    } else {
+                        const enquiryId = result.data?.id;
+                        const bookingToken = result.data?.booking_token;
+                        if (enquiryId === undefined || enquiryId === null
+                            || typeof bookingToken !== 'string' || !bookingToken) {
+                            status.dataset.state = 'error';
+                            status.textContent = 'Your enquiry was received, but the booking session could not be started. Please contact us before continuing.';
+                            console.error('Enquiry API response is missing the booking ID or booking token.', result);
+                            return;
+                        }
+
+                        const continuationUrl = new URL('/pages/packers-and-movers-enquiries.html', window.location.origin);
+                        continuationUrl.searchParams.set('enquiryId', String(enquiryId));
+
+                        try {
+                            sessionStorage.setItem('sakshamMoveEnquiry', JSON.stringify({
+                                id: enquiryId,
+                                bookingToken,
+                                ...payload,
+                            }));
+                        } catch (error) {
+                            console.error('Unable to retain enquiry details for the next step:', error);
+                            status.dataset.state = 'error';
+                            status.textContent = 'Your enquiry was received, but this browser could not securely retain the booking session. Please enable session storage and try again.';
+                            return;
+                        }
+
+                        const dialog = document.createElement('dialog');
+                        dialog.className = 'enquiry-success-dialog';
+                        dialog.setAttribute('aria-labelledby', `enquiry-success-title-${formIndex}`);
+                        const heading = document.createElement('h2');
+                        heading.id = `enquiry-success-title-${formIndex}`;
+                        heading.textContent = 'Thank you for connecting with us!';
+                        const message = document.createElement('p');
+                        message.textContent = enquiryId
+                            ? `Your enquiry has been received (reference ${enquiryId}). Continue to tell us more about your move.`
+                            : 'Your enquiry has been received. Continue to tell us more about your move.';
+                        const continueButton = document.createElement('button');
+                        continueButton.type = 'button';
+                        continueButton.className = 'search-btn';
+                        continueButton.textContent = 'Continue';
+                        let hasRedirected = false;
+                        const redirect = () => {
+                            if (hasRedirected) return;
+                            hasRedirected = true;
+                            window.location.assign(continuationUrl.href);
+                        };
+                        continueButton.addEventListener('click', redirect);
+                        dialog.append(heading, message, continueButton);
+                        document.body.appendChild(dialog);
+                        dialog.addEventListener('close', redirect, { once: true });
+                        try {
+                            dialog.showModal();
+                            window.setTimeout(() => {
+                                if (dialog.open) dialog.close();
+                            }, 1800);
+                        } catch (error) {
+                            console.error('Unable to display the enquiry confirmation dialog:', error);
+                            status.dataset.state = 'success';
+                            status.textContent = 'Thanks for connecting with us. Taking you to the next step...';
+                            window.setTimeout(redirect, 800);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Unable to submit Check Price enquiry:', error);
+                    status.dataset.state = 'error';
+                    status.textContent = 'We could not connect to submit your enquiry. Please check your connection and try again.';
+                } finally {
+                    status.hidden = false;
+                    submitButton.innerHTML = originalButtonContent;
+                    submitButton.disabled = false;
+                    form.removeAttribute('aria-busy');
+                    isSubmitting = false;
+                }
+            });
+        });
+    }
+
 
     /* Close Modal */
 

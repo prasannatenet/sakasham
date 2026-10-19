@@ -651,6 +651,116 @@
     text-align: right;
 }
 
+.enquiry-price-dialog {
+    width: min(92vw, 52rem);
+    max-height: 88vh;
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: 1.2rem;
+    color: #303442;
+    box-shadow: 0 2rem 6rem rgba(20, 24, 30, .3);
+}
+
+.enquiry-price-dialog::backdrop {
+    background: rgba(20, 24, 30, .62);
+}
+
+.enquiry-price-dialog-content {
+    position: relative;
+    padding: 3rem;
+}
+
+.enquiry-price-dialog-content h2 {
+    margin: .5rem 0;
+    color: #242936;
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+}
+
+.enquiry-price-dialog-content > p:not(.enquiry-kicker, .enquiry-price-note) {
+    color: #6e7380;
+}
+
+.enquiry-price-dialog-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    border: 0;
+    background: transparent;
+    color: #565c68;
+    cursor: pointer;
+    font-size: 2.8rem;
+    line-height: 1;
+}
+
+.enquiry-price-breakdown {
+    display: grid;
+    gap: .9rem;
+    margin: 2rem 0 1.4rem;
+    padding: 0;
+    list-style: none;
+}
+
+.enquiry-price-breakdown li,
+.enquiry-price-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.enquiry-price-breakdown li {
+    color: #565c68;
+    font-size: 1.4rem;
+}
+
+.enquiry-price-breakdown strong {
+    color: #303442;
+    white-space: nowrap;
+}
+
+.enquiry-price-total {
+    padding-top: 1.4rem;
+    border-top: 1px solid #e3e5e9;
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.enquiry-price-total strong {
+    color: var(--primary-900);
+    font-size: 2rem;
+}
+
+.enquiry-price-note {
+    margin: 1.2rem 0 0;
+    color: #6e7380;
+    font-size: 1.2rem;
+}
+
+.enquiry-booking-status {
+    margin: 1.4rem 0 0;
+    font-size: 1.4rem;
+}
+
+.enquiry-booking-status[data-state="success"] {
+    color: #16713b;
+}
+
+.enquiry-booking-status[data-state="error"] {
+    color: #b42318;
+}
+
+.enquiry-price-request {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.enquiry-price-home {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+}
+
 @media (max-width: 1000px) {
     .enquiry-items-layout {
         grid-template-columns: 18rem minmax(0, 1fr);
