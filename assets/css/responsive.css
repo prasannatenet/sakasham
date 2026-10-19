@@ -3,10 +3,14 @@
     .header-inner { justify-content: space-between; width: 100%;}
 
     .nav-dropdown:hover .nav-dropdown-menu { transform: inherit;}
+
+    .hero-section .search-area { position: static; transform: translate(00px, 0px);}
+    .hero-section .search-area .search-box { flex-wrap: wrap;}
     
 }
 
 @media (max-width: 600px) {
+    body { font-size: 16px;}
     .faq-intro { position: static;}
     .mission-box { position: relative;}
     .inner-page-breadcrumb { font-size: 13px;}
@@ -16,20 +20,37 @@
 
     .faq-title { font-size: 17px;}
 
-    .coverage-section.active .coverage-map { flex-direction: column;}
+    .coverage-section.active .coverage-map, .gallery-hero .container { flex-direction: column;}
+    .gallery-hero .container { padding: 4rem 0;}
+
+    .topBar { display: none;}
+    .hero-swiper { height: 300px;}
+    .hero-content h1 { font-size: 3rem;}
+
+    .service-content::after { display: none;}
+    .service-content h1, .service-content p, .service-list li { color: white;}
+    .hero .search-box { flex-wrap: wrap;}
+    .about-city p { line-height: 26px;}
+    .iba-section .container { padding: 3rem;}
+    .about-city { padding: 4rem 0;}
+
+    .service-solution-grid, .about-certificates-grid { grid-template-columns: 1fr;}
+    .service-solution-grid ul {padding-left: 0;}
 }
 
 
 @media (max-width: 500px) {
     
-    html { font-size: 55%;}
+    html { font-size: 50%;}
+
+    h2 { font-size: clamp(22px, 2.5rem, 2.6rem);}
 
 
     .header-logo { width: auto;}
     .site-header { padding: 5px 20px 0;}
 
-    .header-phone { padding: 2px 4px;}
-    .faq-intro h2, .locations-header h2, .why-choose-content h2 { font-size: 3.2rem;}
+    .header-phone { padding: 4px 8px;}
+    .faq-intro h2, .locations-header h2, .why-choose-content h2 { font-size: 3.2rem; line-height: normal;}
     .inner-page-breadcrumb, .header-phone span {display: none;}
 
     .location-card h3 { font-size: 20px;}

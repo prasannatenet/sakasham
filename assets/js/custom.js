@@ -1,4 +1,50 @@
 
+// Scan to pay modal
+document.body.insertAdjacentHTML('beforeend', `
+    <button class="scan-to-pay-trigger" type="button" data-modal="scanToPayModal"
+        aria-controls="scanToPayModal" aria-haspopup="dialog">
+        <span class="scan-to-pay-icon" aria-hidden="true">₹</span>
+        <span>SCAN TO PAY</span>
+    </button>
+    <div class="site-modal scan-to-pay-modal" id="scanToPayModal" role="dialog"
+        aria-modal="true" aria-labelledby="scanToPayTitle" aria-hidden="true">
+        <button class="site-modal-overlay" type="button" data-modal-close
+            aria-label="Close payment details"></button>
+        <div class="site-modal-dialog">
+            <button class="site-modal-close" type="button" data-modal-close
+                aria-label="Close payment details"><span aria-hidden="true">&times;</span></button>
+            <div class="site-modal-content scan-to-pay-content">
+                <section class="scan-to-pay-scan-panel" aria-label="PhonePe QR payment">
+                    <div class="scan-to-pay-brand">
+                        <span class="scan-to-pay-brand-icon" aria-hidden="true">पे</span>
+                        <span>Phone Pe</span>
+                    </div>
+                    <h2>Scan to pay</h2>
+                    <p>Open your UPI app and scan this QR code</p>
+                    <div class="scan-to-pay-qr-card">
+                        <img class="scan-to-pay-qr" src="assets/images/payment-qr.png"
+                            alt="PhonePe payment QR code for Saksham Packers and Movers">
+                    </div>
+                    <span class="scan-to-pay-scan-note">Secure UPI payment</span>
+                </section>
+                <section class="scan-to-pay-info" aria-labelledby="scanToPayTitle">
+                    <span class="scan-to-pay-eyebrow">PAYMENT INFORMATION</span>
+                    <h2 id="scanToPayTitle">Saksham Packers &amp; Movers</h2>
+                    <p class="scan-to-pay-subtitle">Use these details to verify your payment.</p>
+                    <div class="scan-to-pay-details">
+                        <div><strong>Account Holder</strong><span>Mr. Ramesh Kumar</span></div>
+                        <div><strong>Bank</strong><span>State Bank Of India</span></div>
+                        <div><strong>Account Number</strong><span>34303931069</span></div>
+                        <div><strong>IFSC Code</strong><span>SBIN0011309</span></div>
+                    </div>
+                    <p class="scan-to-pay-help">For payment support, contact our team.
+                        <a href="contact-us.html">Get help</a></p>
+                </section>
+            </div>
+        </div>
+    </div>
+`);
+
 //Mobile menu toggle
 
 const menuToggle = document.querySelector('.menu-toggle');
@@ -17,6 +63,17 @@ menuToggle?.addEventListener('click', () => {
     }
 
 });
+
+const header = document.querySelector('.site-header');
+
+if (header) {
+    const updateStickyHeader = () => {
+        header.classList.toggle('sticky', window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', updateStickyHeader, { passive: true });
+    updateStickyHeader();
+}
 
 //Mobile Dropdown Menu
 const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
@@ -39,7 +96,9 @@ dropdownToggles.forEach(toggle => {
 
 
 //HERO BANNER SWIPER-----------------------------------------------------------------
-const heroSwiper = new Swiper('.hero-swiper', {
+const heroSwiperElement = document.querySelector('.hero-swiper');
+if (heroSwiperElement && typeof Swiper !== 'undefined') {
+    const heroSwiper = new Swiper('.hero-swiper', {
     loop: true,
     speed: 1400,
     autoplay: {
@@ -73,22 +132,23 @@ const heroSwiper = new Swiper('.hero-swiper', {
             updateHeroTab(this.realIndex);
         }
     }
-});
+    });
 
 
-function updateHeroTab(index) {
-    document.querySelectorAll('.hero-tab').forEach((tab, i) => {
-        tab.classList.toggle('active', i === index);
+    function updateHeroTab(index) {
+        document.querySelectorAll('.hero-tab').forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+        });
+    }
+
+
+    document.querySelectorAll('.hero-tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+            const index = this.dataset.slide;
+            heroSwiper.slideToLoop(index);
+        });
     });
 }
-
-
-document.querySelectorAll('.hero-tab').forEach(tab => {
-    tab.addEventListener('click', function () {
-        const index = this.dataset.slide;
-        heroSwiper.slideToLoop(index);
-    });
-});
 
 
 
