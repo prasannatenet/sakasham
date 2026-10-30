@@ -45,54 +45,85 @@ document.body.insertAdjacentHTML('beforeend', `
     </div>
 `);
 
-//Mobile menu toggle
 
-const menuToggle = document.querySelector('.menu-toggle');
-const mainNav = document.querySelector('.main-nav');
-const menuIcon = menuToggle?.querySelector('.material-symbols-outlined');
+ // Mobile menu, sticky header and dropdown initialization
 
-menuToggle?.addEventListener('click', () => {
-    mainNav.classList.toggle('show');
+function initHeaderFeatures() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    const menuIcon = menuToggle?.querySelector('.material-symbols-outlined');
 
-    if (mainNav.classList.contains('show')) {
-        menuIcon.textContent = 'close';
-        menuToggle.classList.add('active');
-    } else {
-        menuIcon.textContent = 'menu';
-        menuToggle.classList.remove('active');
+    // Mobile Menu Toggle
+    if (menuToggle && mainNav && menuIcon &&
+        menuToggle.dataset.menuInitialized !== 'true') {
+
+        menuToggle.dataset.menuInitialized = 'true';
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('show');
+
+            const isOpen = mainNav.classList.contains('show');
+
+            menuIcon.textContent = isOpen ? 'close' : 'menu';
+            menuToggle.classList.toggle('active', isOpen);
+        });
     }
 
-});
+    // Sticky Header
+    const header = document.querySelector('.site-header');
 
-const header = document.querySelector('.site-header');
+    if (header && header.dataset.stickyInitialized !== 'true') {
+        header.dataset.stickyInitialized = 'true';
 
-if (header) {
-    const updateStickyHeader = () => {
-        header.classList.toggle('sticky', window.scrollY > 300);
-    };
+        const updateStickyHeader = () => {
+            header.classList.toggle('sticky', window.scrollY > 300);
+        };
 
-    window.addEventListener('scroll', updateStickyHeader, { passive: true });
-    updateStickyHeader();
+        window.addEventListener('scroll', updateStickyHeader, {
+            passive: true
+        });
+
+        updateStickyHeader();
+    }
+
+    // Mobile Dropdown Menu
+    document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+        if (toggle.dataset.dropdownInitialized === 'true') return;
+
+        toggle.dataset.dropdownInitialized = 'true';
+
+        toggle.addEventListener('click', function (e) {
+            if (window.innerWidth > 991) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const dropdown = this.closest('.nav-dropdown');
+
+            if (!dropdown) return;
+
+            // Close other dropdowns
+            document.querySelectorAll('.nav-dropdown.open').forEach(item => {
+                if (item !== dropdown) {
+                    item.classList.remove('open');
+                }
+            });
+
+            // Toggle current dropdown
+            dropdown.classList.toggle('open');
+        });
+    });
 }
 
-//Mobile Dropdown Menu
-const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
-dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', function (e) {
-        if (window.innerWidth > 991) return;
-        e.preventDefault();
-        e.stopPropagation();
-        const dropdown = this.closest('.nav-dropdown');
-        // Close other dropdowns
-        document.querySelectorAll('.nav-dropdown.open').forEach(item => {
-            if (item !== dropdown) {
-                item.classList.remove('open');
-            }
-        });
-        // Toggle current dropdown
-        dropdown.classList.toggle('open');
-    });
-});
+// Run when normal page DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeaderFeatures);
+} else {
+    initHeaderFeatures();
+}
+
+// Run again when shared header/footer have been inserted
+document.addEventListener('shared-layout:loaded', initHeaderFeatures);
 
 
 //HERO BANNER SWIPER-----------------------------------------------------------------
@@ -1497,7 +1528,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 input.name = fieldName;
                 input.required = true;
-                input.maxLength = fieldName === 'mobile' ? 20 : 120;
+                input.maxLength = fieldName === 'mobile' ? 10 : 120;
                 if (label) {
                     const id = `check-price-${formIndex}-${fieldName}`;
                     input.id = id;
@@ -1720,4 +1751,48 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
     });
+});
+
+
+
+
+document.addEventListener("click", function (event) {
+    // Open modal
+    const openButton = event.target.closest(".open-modal");
+
+    if (openButton) {
+        event.preventDefault();
+
+        const modal = document.getElementById("commonModal");
+
+        if (modal) {
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.classList.add("modal-open");
+        }
+    }
+
+    // Close modal
+    if (event.target.closest("[data-modal-close]")) {
+        const modal = document.getElementById("commonModal");
+
+        if (modal) {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("modal-open");
+        }
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        const modal = document.getElementById("commonModal");
+
+        if (modal) {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("modal-open");
+        }
+    }
 });
